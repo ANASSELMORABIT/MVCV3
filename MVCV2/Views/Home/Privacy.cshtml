@@ -1,0 +1,97 @@
+﻿@model ProgramaRafaAnass.Models.API2.Root
+
+@{
+    ViewData["Title"] = "Privacy";
+}
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css'>
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'>
+</head>
+<body class="darkmode">
+    <nav class="main-menu">
+        <div>
+            <div class="user-info">
+                <img src="https://raw.githubusercontent.com/RVDveloper/AnafaelBeatsFinalVersionGoldMaster/main/Anafaelbeats/static/img/_e1135106-ec32-445d-ad40-d9fb257f977e.jpg" alt="user" />
+                <p>Anafael Beats</p>
+            </div>
+            <ul>
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Home")">
+                        <i class="fa fa-music nav-icon"></i>
+                        <span class="nav-text">Songs</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#">
+                        <i class="fa fa-user nav-icon"></i>
+                        <span class="nav-text">Artists</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("GetLyrics", "Home", new { artist = "ArtistName", songTitle = "SongTitle" })">
+                        <i class="fa fa-heart nav-icon"></i>
+                        <span class="nav-text">Lyrics</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="content">
+        <div class="left-content">
+            <h1>Artistas</h1>
+
+            @if (Model != null && Model.chart_items != null)
+            {
+                <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 20px; max-width: 1220px; margin-bottom: 60px;">
+                    @foreach (var chartItem in Model.chart_items)
+                    {
+                        var artist = chartItem.item;
+
+                        if (artist.name.Contains("Genius", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        <li class="event-card card" style="display: flex; flex-direction: column; align-items: center;">
+                            <div class="event-header" style="text-align: center;">
+                                <h2>@artist.name</h2>
+                                <img src="@artist.image_url" alt="@artist.name" style="width: 400px; height: 400px; object-fit: cover;" />
+                            </div>
+                            <div class="event-content" style="text-align: center;">
+                                <h3><h2>URL:</h2> <a href="@artist.url" target="_blank">@artist.url</a></h3>
+                                <h3><h2>Verificado:</h2> @(artist.is_verified ? "Sí" : "No")</h3>
+                                <h3><h2>Meme Verificado:</h2> @(artist.is_meme_verified ? "Sí" : "No")</h3>
+                                <h3><h2>Slug:</h2> @artist.slug</h3>
+                                <h3><h2>Header Image:</h2> <a href="@artist.header_image_url" target="_blank">Ver Imagen</a></h3>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No se encontraron artistas.</p>
+            }
+        </div>
+    </section>
+
+    @section Scripts {
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+        <script src='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js'></script>
+        <script src="~/js/site.js"></script>
+    }
+</body>
+</html>
